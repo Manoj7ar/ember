@@ -6,6 +6,8 @@ Ember is an AI-assisted voice accessibility application for people whose speech 
 
 The guiding phrase for the product is **restoring the human connection**: technology should widen participation, not flatten identity into a generic synthetic voice or a grid of static phrases.
 
+At the **ElevenLabs** and Google Cloud **AI Partner Catalyst Hackathon (2025)**, Ember placed **second**.
+
 ---
 
 ## Why Ember exists
@@ -185,7 +187,9 @@ Roadmaps evolve with feedback, regulation, and partner constraints; treat the ab
 
 ## Hackathon and credits
 
-Ember was built for the **ElevenLabs and Google Cloud AI Partner Catalyst Hackathon (2025)**.
+Ember was created for the **ElevenLabs** and Google Cloud **AI Partner Catalyst Hackathon (2025)**—a partner-focused build sprint centered on voice AI, multimodal experiences, and real-world use cases. The project **placed second** in the competition.
+
+Voice synthesis and conversational audio are core to Ember’s mission; **ElevenLabs** is both a hackathon co-host and a foundational part of the stack (cloning, TTS, and agent flows), alongside Google Gemini and the other services listed above.
 
 **Author:** Manoj Kumar  
 **Email:** [Manoj07ar@gmail.com](mailto:Manoj07ar@gmail.com)  
