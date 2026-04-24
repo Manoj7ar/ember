@@ -18,7 +18,9 @@ Roughly fifty million people worldwide live with speech disabilities. They deser
 
 ## Inspiration
 
-This project grew out of a personal connection to the problem: a parent who works in a nursing home, where limited staff time, background noise, and progressive conditions make every conversation precious and every misunderstanding costly. Ember is a technical response to something observed daily in that environment—not an abstract hackathon idea, but a sustained wish that residents could be understood on their own terms.
+My mom works in a nursing home, and every day she comes home with stories that make the statistics real: residents who struggle to get a sentence out, families who lean in and still mishear, and staff who are caring but stretched thin. In that setting, limited time, background noise, and progressive conditions mean every conversation is precious and every misunderstanding is costly.
+
+This project grew directly from watching that world through her eyes. Ember is not an abstract hackathon concept; it is a sustained wish that people in care—and everywhere speech is hard—could be understood on their own terms.
 
 ---
 
