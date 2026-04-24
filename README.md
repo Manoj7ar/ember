@@ -1,213 +1,198 @@
-# ember.
+# Ember
 
-**Try Ember:** [https://ember-orcin.vercel.app](https://ember-orcin.vercel.app)
+**Live demo:** [https://ember-orcin.vercel.app](https://ember-orcin.vercel.app)
 
-**Restoring the human connection.**
+Ember is an AI-assisted voice accessibility application for people whose speech is difficult for others—or for typical assistants—to understand. Conditions such as ALS and motor neurone disease, stroke-related aphasia, and dysarthria can make communication exhausting and isolating. Ember is built around a simple idea: **preserve the person behind the words**. Users can bank a compact set of phrases to clone or approximate their own voice, then rely on models that interpret fragmented or unclear speech, optional camera context, and environmental signals to produce clear, natural output and practical actions.
 
-Ember is an AI-powered voice accessibility assistant designed for people with speech disabilities such as ALS/MND, stroke-induced aphasia, and dysarthria. It moves beyond traditional AAC devices by using your own voice - cloned and preserved - or a reconstructed version of it, to communicate instantly and naturally.
+The guiding phrase for the product is **restoring the human connection**: technology should widen participation, not flatten identity into a generic synthetic voice or a grid of static phrases.
 
-## 🚀 Mission
+---
 
-To ensure that no one loses their unique identity when they lose their ability to speak. We believe in "Voice Independence": privacy-first, local-processing, and zero-latency communication.
+## Why Ember exists
 
-## ✨ Key Features
+Traditional augmentative and alternative communication (AAC) tools are invaluable but often feel like a trade-off between clarity and selfhood. Long studio sessions for voice banking exclude many people; generic voices erase timbre and familiarity for family and caregivers. Ember explores a middle path: **voice independence**—privacy-aware processing, low-friction voice capture, and outputs that stay anchored to *your* voice and *your* intent.
 
-*   **Voice Banking:** Record just 5 phrases to create a digital twin of your voice. No 3-hour studio sessions required.
-*   **Aphasia Repair:** Our AI contextually reconstructs fragmented speech and stuttered words into fluent, complete sentences in your own voice.
-*   **Vision-Voice Context:** Point your camera at an object and speak naturally. Ember sees what you see (e.g., "Open this" while pointing at a door) and executes the command.
-*   **SmartThings Integration:** Control your home environment (lights, locks, TV) directly with voice commands, even with impaired speech.
-*   **Context-Aware:** Uses location, time, and visual cues to predict and suggest relevant responses.
-*   **Emergency Guard:** Detects distress/urgency in your voice or words and can automatically trigger alerts or calls to caregivers.
-*   **Local-First Privacy:** Voice processing happens on-device or via secure, ephemeral edge functions. Your voice model is your vault.
+Roughly fifty million people worldwide live with speech disabilities. They deserve systems that infer meaning from how they actually sound, not only from how textbook speech is written.
 
-## 🛠️ Technology Stack
+---
 
-*   **Frontend:** React, Vite, Tailwind CSS, shadcn/ui
-*   **AI/LLM:** Google Gemini 2.0 Flash (Reasoning, Vision, Rephrasing)
-*   **Voice:** ElevenLabs (Voice Cloning, TTS, Speech-to-Text)
-*   **Backend:** Supabase (Auth, Database, Edge Functions)
-*   **Communication:** Twilio (Emergency SMS/Call)
-*   **IoT:** Samsung SmartThings API
+## Inspiration
 
-## 🏁 Getting Started
+This project grew out of a personal connection to the problem: a parent who works in a nursing home, where limited staff time, background noise, and progressive conditions make every conversation precious and every misunderstanding costly. Ember is a technical response to something observed daily in that environment—not an abstract hackathon idea, but a sustained wish that residents could be understood on their own terms.
 
-### Prerequisites
+---
 
-*   Node.js & npm
-*   Supabase account
-*   ElevenLabs account (for voice features)
-*   Google Gemini API Key
+## What Ember does
 
-### Installation
+### Voice banking and synthesis
 
-1.  **Clone the repository**
-    ```sh
-    git clone https://github.com/Superieur-fuel/ember.git
-    cd ember
-    ```
+Users record a small set of phrases (on the order of five) to create a usable digital voice profile without a multi-hour recording block. ElevenLabs powers cloning, text-to-speech, and conversation-related flows; the app treats the voice profile as something to protect, not as disposable cloud data.
 
-2.  **Install dependencies**
-    ```sh
-    npm install
-    # or
-    pnpm install
-    ```
+### Aphasia and dysarthria-aware interpretation
 
-3.  **Environment Setup**
-    Create a `.env` file in the root directory. **DO NOT COMMIT THIS FILE.**
-    ```env
-    VITE_SUPABASE_URL=your_supabase_url
-    VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_key
-    VITE_ELEVENLABS_AGENT_ID=your_agent_id
-    ```
+Google Gemini (including Flash-class models) drives reasoning, rephrasing, disambiguation, vision understanding, and reporting. Specialized prompting addresses slurred or fragmented input, incomplete sentences, and urgent wording so that ambiguous audio can become fluent, speakable text—still intended to be rendered in the user’s own or banked voice where possible.
 
-4.  **Start the development server**
-    ```sh
-    npm run dev
-    ```
+### Vision and context
 
-## 🔒 Security Note
+The camera can supply visual context (for example, indicating an object or door while speaking). That multimodal signal is combined with speech, time, history, and optional environmental cues so commands like environmental adjustments can be grounded in what the user is looking at, not only in transcribed words.
 
-This repository enforces strict security practices.
-*   **Never commit `.env` files.**
-*   API keys (Gemini, ElevenLabs, Twilio) should be stored in **Supabase Edge Secrets**, not in the client-side code.
+### Smart home
 
-## 📄 License
+Samsung SmartThings integration lets users adjust lights, locks, media, and other supported devices by voice—even when the raw utterance is short, vague, or impaired. The goal is to reduce physical reach-and-tap load for people with limited mobility.
 
-Distributed under the MIT License. See `LICENSE` for more information.
+### Context-aware assistance
+
+Location, time, recent activity, and device state can inform suggestions and interpretations so the assistant behaves less like a isolated dictation box and more like something aware of the user’s situation.
+
+### Emergency awareness
+
+When language or prosody suggests distress or critical urgency, Ember can surface safeguards such as caregiver notifications. Twilio supports SMS and optional emergency call flows from Supabase edge functions so alerts are not implemented entirely in untrusted client code.
+
+### Privacy posture
+
+The architecture favors **local-first and server-mediated** patterns: sensitive operations run in Supabase Edge Functions (Deno), not as long-lived secrets in the browser. Voice and identity data should be treated as high-trust assets; API keys for Gemini, ElevenLabs, Twilio, and other services belong in **Supabase secrets** or equivalent secure configuration, never committed to the repository.
 
 ---
 
 ## Architecture
+
 ```
-Frontend (React + TypeScript)
-    ↓
-Supabase Edge Functions (Deno)
-    ↓
-┌─────────────┬──────────────┬───────────────┬──────────┐
-│ ElevenLabs  │ Google       │ SmartThings   │ Twilio   │
-│ Voice I/O   │ Gemini 2.0   │ Smart Home    │ Emergency│
-└─────────────┴──────────────┴───────────────┴──────────┘
+React + TypeScript (Vite)
+        │
+        ▼
+Supabase (Auth, Postgres, Edge Functions)
+        │
+        ├── ElevenLabs — voice clone, TTS, conversation tokens
+        ├── Google Gemini — rephrase, disambiguate, vision, reports
+        ├── Samsung SmartThings — home automation
+        └── Twilio — SMS and emergency call hooks
 ```
 
-Key Features:
+The frontend coordinates authentication and UX; edge functions hold provider credentials and implement the integration surface. That split keeps the browser bundle free of privileged keys while still enabling rich multimodal features.
 
-1.Intelligent Speech Understanding
+### Supabase Edge Functions
 
-User says: "wan... coff... hot"  // Unclear, fragmented
-Gemini interprets: "I want hot coffee"
-Confidence: 87%
+Server-side entry points in `supabase/functions/` include:
 
-Specialized prompts for:
-- Dysarthria (slurred speech)
-- Aphasia (fragmented sentences)
-- Urgent situations
-- Standard speech
+| Function | Role |
+|----------|------|
+| `elevenlabs-voice-clone` | Voice profile / cloning pipeline |
+| `elevenlabs-tts` | Text-to-speech |
+| `elevenlabs-conversation-token` | Secured conversation session tokens |
+| `gemini-rephrase` | Fluent rewriting from impaired or fragmented input |
+| `gemini-disambiguate` | Clarification when multiple interpretations exist |
+| `gemini-vision` | Camera-grounded understanding |
+| `gemini-generate-report` | Structured reporting from session or clinical-style inputs |
+| `smartthings-control` | Smart home command execution |
+| `twilio-sms` | Outbound SMS (e.g. caregiver alerts) |
+| `twilio-emergency-call` | Voice emergency channel |
 
-2.Multimodal AI
-
-Combines multiple inputs:
-- Speech (unclear/fragmented)
-- Visual context (camera)
-- Temporal context (time, history)
-- Environmental context (location, devices)
-
-3.Smart Home Integration
-
-User: "too dark"
-→ Ember understands
-→ Controls SmartThings lights
-→ Lights turn ON
-
-No physical interaction needed.
-
-4.Emergency Safety
-
-User: "help... pain... bad"
-→ Detects CRITICAL urgency
-→ Calls emergency contact
-→ Sends SMS to caregivers
-
-Life-saving automation.
+Shared utilities (for example CORS helpers) live under `supabase/functions/_shared/`.
 
 ---
 
-Project Structure
+## Repository layout
+
 ```
 ember/
 ├── src/
-│   ├── components/      # React components
-│   ├── pages/          # Route pages
-│   ├── hooks/          # Custom hooks
-│   ├── services/       # API services
-│   └── integrations/   # Third-party integrations
+│   ├── components/      # UI, accessibility, voice, smart home, onboarding
+│   ├── pages/           # Landing, app shell, auth, legal, mission, technology
+│   ├── hooks/           # Auth, ElevenLabs, browser voice, shortcuts, etc.
+│   ├── services/        # Gemini, smart home, caregivers, encryption helpers
+│   ├── integrations/    # Supabase client and generated types
+│   ├── contexts/        # Accessibility and global UI state
+│   ├── utils/           # Speech detection, aphasia heuristics, corrections, feedback
+│   └── types/           # Ambient type declarations
 ├── supabase/
-│   └── functions/      # Edge functions (9 total)
-├── public/             # Static assets
+│   ├── functions/       # Edge functions (Deno)
+│   └── config.toml      # Local Supabase configuration
+├── public/              # Static assets
+├── package.json
+├── LICENSE
 └── README.md
-
 ```
 
-Future Roadmap
+---
 
-Phase 1: Software validation (Complete)
+## Technology stack
 
-Phase 2: AR glasses deployment
-- Meta Ray-Ban integration
-- Eye-tracking for pointing
-- Continuous visual context
-- Ambient voice control
-
-Phase 3:Clinical deployment
-- Nursing home partnerships
-- Field testing with 10+ residents
-- HIPAA compliance
-- Medicare/Medicaid coverage
+| Layer | Choices |
+|-------|---------|
+| UI | React 18, Vite, TypeScript, Tailwind CSS, shadcn/ui (Radix primitives), Framer Motion |
+| Data and auth | Supabase (JavaScript client, Row Level Security patterns as configured in your project) |
+| Models | Google Gemini family for language, reasoning, and vision |
+| Voice | ElevenLabs (React SDK, REST via edge functions) |
+| Telephony | Twilio (SMS and programmable voice for escalation paths) |
+| IoT | Samsung SmartThings REST API |
 
 ---
 
-Contact:
+## Getting started
 
-Built for: ElevenLabs + Google Cloud AI Partner Catalyst Hackathon 2025
+### Prerequisites
 
-much love!
-Developer: Manoj Kumar
-Email: Manoj07ar@gmail.com
-LinkedIn: https://www.linkedin.com/in/manoj07ar/
+- Node.js 18+ and npm (or pnpm)
+- Supabase project with Edge Functions deployed
+- ElevenLabs account for voice features
+- Google AI / Gemini API access for language and vision
+- Optional: Twilio and SmartThings credentials for full emergency and home automation flows
+
+### Install and run
+
+```sh
+git clone https://github.com/Manoj7ar/ember.git
+cd ember
+npm install
+npm run dev
+```
+
+Other useful scripts: `npm run build`, `npm run lint`, `npm run preview`.
+
+### Environment variables
+
+Create a `.env` file in the project root (do not commit it). At minimum the client needs Supabase and ElevenLabs agent configuration:
+
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your_anon_or_publishable_key
+VITE_ELEVENLABS_AGENT_ID=your_conversational_ai_agent_id
+```
+
+Gemini, Twilio, SmartThings, and ElevenLabs **server** keys should be configured as secrets for your Supabase Edge Functions, not duplicated in `VITE_*` variables, unless you have deliberately scoped a public-safe key.
+
+### Security
+
+- Never commit `.env` or any file containing live API keys.
+- Rotate keys if they are ever exposed.
+- Review Supabase RLS policies and function JWT settings before production use.
 
 ---
-Acknowledgments:
 
-Inspiration: My mom, who works in a nursing home and shows me this problem every day.
+## Roadmap (directional)
 
-Technologies: ElevenLabs, Google Gemini, Supabase, SmartThings, Twilio
+**Software validation** — Harden flows, measurement, and demo reliability for real-world trials (ongoing / first milestone).
 
-For: The 50 million people worldwide with speech disabilities who deserve technology that understands them.
+**Ambient and wearable context** — Explore integrations such as camera-enabled glasses, eye-gaze or head-pointing for target selection, continuous visual context, and hands-free control so the assistant stays available during daily activity.
+
+**Clinical and residential deployment** — Partnerships with care facilities, larger field cohorts, HIPAA-aligned handling where required, and sustainable reimbursement models (for example Medicare or Medicaid pathways) where applicable and legally appropriate.
+
+Roadmaps evolve with feedback, regulation, and partner constraints; treat the above as intent, not a guarantee of shipping order or scope.
+
+---
+
+## Hackathon and credits
+
+Ember was built for the **ElevenLabs and Google Cloud AI Partner Catalyst Hackathon (2025)**.
+
+**Author:** Manoj Kumar  
+**Email:** [Manoj07ar@gmail.com](mailto:Manoj07ar@gmail.com)  
+**LinkedIn:** [linkedin.com/in/manoj07ar](https://www.linkedin.com/in/manoj07ar/)
+
+**Acknowledgments:** ElevenLabs, Google Gemini, Supabase, Samsung SmartThings, and Twilio for the platforms that make this stack possible—and every caregiver and resident who keeps reminding us that **everyone deserves to be heard, no matter how their voice sounds**.
 
 ---
 
-Because everyone deserves to be heard, no matter how their voice sounds.
+## License
 
-
----
-MIT License
-
-Copyright (c) 2025  Manoj
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Distributed under the MIT License. See [LICENSE](LICENSE) for the full text.
